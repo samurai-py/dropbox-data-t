@@ -26,7 +26,7 @@ var/
 !settings.ini
 
 # Arquivos de dados
-src/csv_files/data.csv
+csv_files/
 temp_downloads/
 
 # Logs
