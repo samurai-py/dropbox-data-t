@@ -9,7 +9,9 @@ CSV_OUTPUT_PATH: str = config("CSV_OUTPUT_PATH", cast=str, default="src/csv_file
 TEMP_DOWNLOAD_PATH: str = config("TEMP_DOWNLOAD_PATH", cast=str, default="src/temp_downloads")
 
 # External API variables
-DROPBOX_ACCESS_TOKEN: str = config("DROPBOX_ACCESS_TOKEN_PERSONAL", cast=str)
+DROPBOX_APP_KEY: str = config("DROPBOX_APP_KEY", cast=str)
+DROPBOX_APP_SECRET: str = config("DROPBOX_APP_SECRET", cast=str)
+DROPBOX_REFRESH_TOKEN: str = config("DROPBOX_REFRESH_TOKEN", cast=str)
 PATH_DROPBOX: str = config("PATH_DROPBOX", cast=str)
 
 # Logging configuration

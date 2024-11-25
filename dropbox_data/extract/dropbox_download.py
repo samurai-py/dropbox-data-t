@@ -3,7 +3,6 @@ import pandas as pd
 from dropbox import Dropbox
 from dropbox.exceptions import ApiError
 from dropbox_data.config import (
-    DROPBOX_ACCESS_TOKEN, 
     PATH_DROPBOX, 
     CSV_DELIMITER, 
     CSV_OUTPUT_PATH, 
@@ -14,8 +13,12 @@ import logging
 logger = logging.getLogger(__name__)
 
 class DropboxDownloader:
-    def __init__(self):
-        self.dbx = Dropbox(DROPBOX_ACCESS_TOKEN)
+    def __init__(self, access_token=None):
+        if not access_token:
+            logger.error("Token de acesso não fornecido")
+            raise ValueError("É necessário fornecer um token de acesso")
+            
+        self.dbx = Dropbox(access_token)
         self.data_path = CSV_OUTPUT_PATH
         self.temp_dir = TEMP_DOWNLOAD_PATH
         
@@ -114,9 +117,9 @@ class DropboxDownloader:
         except Exception as e:
             logger.error(f"Erro ao limpar arquivos temporários: {e}")
 
-def extract_data(download_files=True):
+def extract_data(access_token=None, download_files=True):
     try:
-        downloader = DropboxDownloader()
+        downloader = DropboxDownloader(access_token)
         
         if download_files:
             # Lista arquivos CSV no Dropbox

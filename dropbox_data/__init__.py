@@ -12,9 +12,9 @@ def run_pipeline():
     """
     try:
         logger.info("Iniciando pipeline de processamento")
-        df = process_data()
+        result = process_data()
         logger.info("Pipeline concluído com sucesso")
-        return df
+        return result
     except Exception as e:
         logger.error(f"Erro durante execução do pipeline: {e}")
         raise

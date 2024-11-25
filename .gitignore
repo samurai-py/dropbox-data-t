@@ -40,3 +40,6 @@ logs/
 
 # Ambiente virtual
 /venv/
+
+secrets/
+*token.json
