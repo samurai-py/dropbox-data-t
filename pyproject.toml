@@ -11,13 +11,7 @@ dependencies = [
     "pandas",
     "dropbox",
     "python-decouple",
-    "dask[dataframe]",
-    "dask[distributed]",
     "redis",
-    "beautifulsoup4",
-    "requests",
-    "pyspark>=3.5.0",
-    "pyarrow>=14.0.1",
 ]
 
 [project.optional-dependencies]
@@ -35,7 +29,7 @@ requires = ["setuptools>=45",
 build-backend = "setuptools.build_meta"
 
 [project.scripts]
-start_app = "dropbox_data:main"
+start_app = "dropbox_data:run_pipeline"
 
 [tool.setuptools]
 packages = ["dropbox_data"]

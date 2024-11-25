@@ -11,11 +11,6 @@ from dropbox_data.config import (
 )
 import logging
 
-# Configuração do logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
 logger = logging.getLogger(__name__)
 
 class DropboxDownloader:
@@ -119,7 +114,7 @@ class DropboxDownloader:
         except Exception as e:
             logger.error(f"Erro ao limpar arquivos temporários: {e}")
 
-def main(download_files=True):
+def extract_data(download_files=True):
     try:
         downloader = DropboxDownloader()
         
@@ -142,4 +137,4 @@ def main(download_files=True):
         raise
 
 if __name__ == "__main__":
-    main(download_files=False) 
+    extract_data(download_files=False) 

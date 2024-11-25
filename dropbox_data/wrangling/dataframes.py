@@ -82,6 +82,13 @@ def process_csv_file(input_path: str, output_path: str, chunk_size: int = 100000
         logger.info(f"Iniciando processamento do arquivo: {input_path}")
         logger.info(f"Arquivo será salvo em: {output_path}")
         
+        # Lê os post_ids existentes se o arquivo de saída já existir
+        existing_post_ids = set()
+        if os.path.exists(output_path):
+            existing_df = pd.read_csv(output_path, sep=';', usecols=['post_id'])
+            existing_post_ids = set(existing_df['post_id'])
+            logger.info(f"Encontrados {len(existing_post_ids)} post_ids existentes")
+        
         # Lê o arquivo em chunks
         chunks = pd.read_csv(input_path, sep=';', chunksize=chunk_size)
         
@@ -90,23 +97,27 @@ def process_csv_file(input_path: str, output_path: str, chunk_size: int = 100000
         total_records = 0
         
         for chunk in chunks:
-            processed_chunk = wrangle_dataframe(chunk)
+            # Filtra apenas novos post_ids no chunk
+            if existing_post_ids:
+                chunk = chunk[~chunk['post_id'].isin(existing_post_ids)]
             
-            # Salva o chunk processado
-            processed_chunk.to_csv(
-                output_path,
-                mode='w' if first_chunk else 'a',
-                header=first_chunk,
-                index=False,
-                sep=';'
-            )
-            
-            total_records += len(processed_chunk)
-            first_chunk = False
-            logger.info(f"Processados {total_records} registros até agora")
+            if not chunk.empty:
+                processed_chunk = wrangle_dataframe(chunk)
+                
+                # Salva o chunk processado
+                processed_chunk.to_csv(
+                    output_path,
+                    mode='w' if first_chunk and not existing_post_ids else 'a',
+                    header=first_chunk and not existing_post_ids,
+                    index=False,
+                    sep=';'
+                )
+                
+                total_records += len(processed_chunk)
+                first_chunk = False
+                logger.info(f"Processados {total_records} registros até agora")
         
         logger.info(f"Processamento concluído. Total de registros: {total_records}")
-        logger.info(f"Arquivo salvo em: {output_path}")
         
         # Verifica se o arquivo foi realmente criado
         if os.path.exists(output_path):
